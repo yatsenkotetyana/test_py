@@ -1,0 +1,25 @@
+import java.util.*; 
+  
+  List<Integer> index;
+  
+ void setup(){
+   index   = new LinkedList<Integer>();
+   index.add(1);
+   index.add(2);
+   index.add(3);
+   index.add(4);  
+   
+   println(index.size());
+   
+   index.remove(2);
+   
+   println(index.size());
+   
+ }
+ void draw(){
+   if (index.size()>1){
+        index.remove(0);
+   
+        println(index.size());
+   }
+ }
