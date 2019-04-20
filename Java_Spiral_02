@@ -1,0 +1,114 @@
+import java.util.*; 
+  
+class Spiral{
+  float xc;
+  float yc;
+  float x;
+  float y;
+  float angle;
+  float angle_step;
+  float rp;
+  float rc;
+  int   cr;
+  int   cg;
+  int   cb;
+  
+  public Spiral(float xc, float yc){
+       this.xc=xc;
+       this.yc=yc;
+       this.x=this.xc;
+       this.y=this.yc;
+       this.angle=0;
+       this.angle_step=0.1;
+       this.rp=1;
+       this.rc=10;
+       this.cr=(int)(xc+yc)%256;
+       this.cg=(int)(xc)%256;
+       this.cb=(int)(yc)%256;
+
+   }
+   
+   public float get_angle(){
+     return angle;
+   }
+   
+    public float get_rc(){
+     return rc;
+   }
+   
+   public float get_x(){
+     return x;
+   }
+  public float get_y(){
+     return y;
+   }
+   
+  public float get_cr(){
+     return cr;
+   }
+   
+   public float get_cg(){
+     return cg;
+   }
+   
+   public float get_cb(){
+     return cb;
+   }
+   
+   public void step_angle(){
+     angle+=angle_step;
+   }
+   
+   public void step_rp(){
+     rp+=1;
+   }
+   
+   public void set_xy(){
+      x=(float)(xc+rp*java.lang.Math.cos(angle));
+      y=(float)(yc+rp*java.lang.Math.sin(angle));
+   }
+}
+
+List<Spiral>  flowers;
+List<Integer> index;
+
+void setup(){
+  size(1200,1200);
+  fill(0,100,0);
+  flowers = new LinkedList<Spiral>();
+  index   = new LinkedList<Integer>();
+ 
+}
+
+void mouseClicked(){
+  flowers.add(new Spiral(mouseX,mouseY));
+}
+
+void draw (){
+
+  float xcur=600;
+  float ycur=600;
+     
+  for(int i=0;i<flowers.size();i++){
+     flowers.get(i).step_angle();
+     flowers.get(i).step_rp();
+     flowers.get(i).set_xy();
+     xcur=flowers.get(i).get_x();
+     ycur=flowers.get(i).get_y();
+     if (xcur>=0 && ycur>=0 && xcur<=width && ycur<=height){
+        fill(flowers.get(i).get_cr(),flowers.get(i).get_cg(),flowers.get(i).get_cb());
+        ellipse(xcur,ycur,flowers.get(i).get_rc(),flowers.get(i).get_rc());
+     }
+     else{
+       index.add(i);
+     }
+  }
+  
+  for(int i=0;i<index.size();i++){
+     flowers.remove((int)index.get(i));
+     for(int j=i+1;j<index.size();j++)
+         index.set(j,index.get(j)-1);
+  }
+  index.clear();
+ 
+}
